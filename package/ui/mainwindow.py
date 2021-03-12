@@ -6,10 +6,15 @@ Markku P
 mainwindow.py
 '''
 
-from PyQt5.QtWidgets import QMainWindow, QApplication, QStyleFactory
+from PyQt5.QtWidgets import QMainWindow, QApplication, QStyleFactory, QStatusBar, QMenuBar
 from PyQt5.QtGui import QIcon, QPalette, QColor
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QObject, pyqtSignal as Signal, pyqtSlot as Slot
+from package.ui.menubar import MenuBar
+from package.ui.central_widget import CentralWidget
 
+
+class SignalComm(QObject):
+    close_app = Signal()
 
 class MainWindow(QMainWindow):
     def __init__(self, settings):
@@ -18,7 +23,14 @@ class MainWindow(QMainWindow):
         
     def initUi(self, settings):
         self.setWindowIcon(QIcon('icons/icon.png'))
+        self.setMinimumSize(400, 300)
         self.resize(settings["app"]["width"], settings["app"]["height"])
+
+        # Create signals instance
+        self.signal_comm = SignalComm()
+
+        # Signals
+        self.signal_comm.close_app.connect(self.close)
 
         # Dark theme
         palette = QPalette()
@@ -39,12 +51,25 @@ class MainWindow(QMainWindow):
         QApplication.setPalette(palette)
         QApplication.setStyle(QStyleFactory.create('Fusion'))
 
+        # Create menubar
+        self.menubar = MenuBar(self.signal_comm.close_app)
+
+        # Create central widget
+        self.central_widget = CentralWidget(settings)
+
         # Create statusbar
-        self.statusBar().show()
-        self.statusBar().setFixedHeight(30)
+        self.statusbar = QStatusBar()
+        self.statusbar.setFixedHeight(25)
+
+        # Add widgets to mainwindow
+        self.setMenuBar(self.menubar)
+        self.setCentralWidget(self.central_widget)
+        self.setStatusBar(self.statusbar)
 
         # Show Mainwindow
         self.show()
 
+    @Slot()
     def closeEvent(self, event):
+        print("Exiting")
         event.accept()
