@@ -6,7 +6,7 @@ Markku P
 plain_text_side.py
 '''
 
-from PyQt5.QtWidgets import QWidget, QFrame, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPlainTextEdit
 
 
 class PlainTextSide(QWidget):
@@ -16,11 +16,12 @@ class PlainTextSide(QWidget):
         self.layout.setContentsMargins(0,0,0,0)
         self.layout.setSpacing(0)
 
-        # empty mockup
-        self.empty_mockup = QFrame()
-        self.empty_mockup.setFrameShape(QFrame.StyledPanel)
-        self.empty_mockup.setStyleSheet("background: #000000;")
-        # ------------
+        # Create textbox
+        self.plain_text = QPlainTextEdit()
+        self.plain_text.setPlaceholderText("Enter text here")
 
-        self.layout.addWidget(self.empty_mockup)
+        # Add widget to layout
+        self.layout.addWidget(self.plain_text)
+
+        # Set layout
         self.setLayout(self.layout)

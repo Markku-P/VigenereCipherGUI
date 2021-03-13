@@ -6,7 +6,7 @@ Markku P
 cipher_text_side.py
 '''
 
-from PyQt5.QtWidgets import QWidget, QFrame, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPlainTextEdit
 
 
 class CipherTextSide(QWidget):
@@ -16,11 +16,13 @@ class CipherTextSide(QWidget):
         self.layout.setContentsMargins(0,0,0,0)
         self.layout.setSpacing(0)
 
-        # empty mockup
-        self.empty_mockup = QFrame()
-        self.empty_mockup.setFrameShape(QFrame.StyledPanel)
-        self.empty_mockup.setStyleSheet("background: #000000;")
-        # ------------
+        # Create textbox
+        self.cipher_text = QPlainTextEdit()
+        self.cipher_text.setPlaceholderText("Encrypted text")
+        self.cipher_text.setReadOnly(True)
 
-        self.layout.addWidget(self.empty_mockup)
+        # Add widget to layout
+        self.layout.addWidget(self.cipher_text)
+
+        # Set layout
         self.setLayout(self.layout)
