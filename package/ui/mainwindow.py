@@ -11,15 +11,18 @@ from PyQt5.QtGui import QIcon, QPalette, QColor
 from PyQt5.QtCore import Qt, QObject, pyqtSignal as Signal, pyqtSlot as Slot
 from package.ui.menubar import MenuBar
 from package.ui.central_widget import CentralWidget
+from package.ui.about_window import AboutWindow
 
 
 class SignalComm(QObject):
     close_app = Signal()
+    show_about = Signal()
 
 class MainWindow(QMainWindow):
     def __init__(self, settings):
         super().__init__()
         self.initUi(settings)
+        self.about_window = AboutWindow(settings["app"]["application_name"], settings["app"]["application_versio"])
         
     def initUi(self, settings):
         self.setWindowIcon(QIcon('icons/icon.png'))
@@ -31,6 +34,7 @@ class MainWindow(QMainWindow):
 
         # Signals
         self.signal_comm.close_app.connect(self.close)
+        self.signal_comm.show_about.connect(self.about)
 
         # Dark theme
         palette = QPalette()
@@ -52,7 +56,7 @@ class MainWindow(QMainWindow):
         QApplication.setStyle(QStyleFactory.create('Fusion'))
 
         # Create menubar
-        self.menubar = MenuBar(self.signal_comm.close_app)
+        self.menubar = MenuBar(self.signal_comm.close_app, self.signal_comm.show_about)
 
         # Create central widget
         self.central_widget = CentralWidget(settings)
@@ -70,6 +74,17 @@ class MainWindow(QMainWindow):
         self.show()
 
     @Slot()
+    def about(self):
+        if self.about_window is not None:
+            self.about_window.setWindowModality(Qt.ApplicationModal)
+            self.about_window.move(self.x() + (self.width() / 2 - self.about_window.width() / 2), self.y() + (self.height() / 2 - self.about_window.height() / 2))
+            self.about_window.show()
+            self.about_window.activateWindow()
+
+            # After about window close set focus back to mainwindow
+            parent = self
+            self.about_window.closeEvent = lambda self: parent.activateWindow()
+
     def closeEvent(self, event):
         print("Exiting")
         event.accept()

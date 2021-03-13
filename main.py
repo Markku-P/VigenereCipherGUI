@@ -28,6 +28,11 @@ if __name__ == "__main__":
     app.setApplicationName(str(settings.get("app").get("application_name") + " Ver " + str(settings.get("app").get("application_versio"))))
     app.setApplicationVersion(str(settings.get("app").get("application_versio")))
 
+    # Set Application font
+    app_font = app.font()
+    app_font.setPointSize(14)
+    app.setFont(app_font)
+
     # Create app mainwindow
     app_mainwindow = MainWindow(settings)
 

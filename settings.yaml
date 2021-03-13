@@ -1,5 +1,5 @@
 app:
   application_versio: 0.1
-  application_name: Vigenere Cipher
-  width: 800
-  height: 600
+  application_name: Vigenere Cipher GUI
+  width: 1200
+  height: 800

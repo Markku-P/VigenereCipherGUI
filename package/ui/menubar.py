@@ -11,7 +11,7 @@ from PyQt5.QtGui import QKeySequence
 
 
 class MenuBar(QMenuBar):
-    def __init__(self, signal_close):
+    def __init__(self, signal_close, signal_about):
         super().__init__()
 
         # Create Menubar and actions
@@ -32,7 +32,7 @@ class MenuBar(QMenuBar):
 
         self.actionFile.addSeparator()
 
-        self.quit_action = QAction(self, text="Quit", shortcut=QKeySequence("Ctrl+Q"))
+        self.quit_action = QAction(self, text="Exit", shortcut=QKeySequence("Ctrl+Q"))
         self.quit_action.triggered.connect(lambda: signal_close.emit())
         self.actionFile.addAction(self.quit_action)
 
@@ -45,4 +45,12 @@ class MenuBar(QMenuBar):
         self.actionHelp = self.addMenu("Help")
         self.actionHelp.addAction("Getting started").triggered.connect(lambda: print("Getting started"))
         self.actionHelp.addSeparator()
-        self.actionHelp.addAction("About").triggered.connect(lambda: print("About"))
+        self.actionHelp.addAction("About").triggered.connect(lambda: signal_about.emit())
+
+        # Set menubar font
+        font = self.font()
+        font.setPointSize(11)
+        self.setFont(font)
+        self.actionFile.setFont(font)
+        self.actionEdit.setFont(font)
+        self.actionHelp.setFont(font)
