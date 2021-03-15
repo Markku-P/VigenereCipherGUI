@@ -31,6 +31,7 @@ class MenuBar(QMenuBar):
         self.actionFile.addAction(self.save_action)
 
         self.actionFile.addSeparator()
+        self.setStyleSheet("""QMenu::Separator {background-color: gray;}""")
 
         self.quit_action = QAction(self, text="Exit", shortcut=QKeySequence("Ctrl+Q"))
         self.quit_action.triggered.connect(lambda: signal_close.emit())
