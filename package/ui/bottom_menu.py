@@ -3,7 +3,7 @@ Bottom menu Class
 Markku P
 2021
 
-top_menu.py
+bottom_menu.py
 '''
 
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPushButton
