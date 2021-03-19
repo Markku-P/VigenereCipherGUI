@@ -30,10 +30,10 @@ class CentralWidget(QWidget):
         self.splitter1.setStyleSheet("QSplitter::handle{padding: 4px;}")
 
         # Create Plain text side
-        self.plain_text_side = PlainTextSide()
+        self.plain_text_side = PlainTextSide(signal_change_ciphering_mode)
 
         # Create Cipher text side
-        self.cipher_text_side = CipherTextSide()
+        self.cipher_text_side = CipherTextSide(signal_change_ciphering_mode)
 
         # Create bottom menu
         self.bottom_menu = BottomMenu(settings, signal_change_ciphering_mode)

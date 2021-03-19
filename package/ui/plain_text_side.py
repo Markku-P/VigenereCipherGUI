@@ -7,10 +7,11 @@ plain_text_side.py
 '''
 
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPlainTextEdit, QGroupBox
+from PyQt5.QtCore import Qt, QObject, pyqtSlot as Slot
 
 
 class PlainTextSide(QWidget):
-    def __init__(self):
+    def __init__(self, signal_change_ciphering_mode):
         super().__init__()
         # Create layouts
         self.layout = QHBoxLayout()
@@ -27,11 +28,23 @@ class PlainTextSide(QWidget):
 
         # Create textbox
         self.plain_text = QPlainTextEdit()
-        self.plain_text.setPlaceholderText("Enter text here")
 
         # Add widget to layout
         self.group_box_layout.addWidget(self.plain_text)
         self.layout.addWidget(self.group_box)
 
+        # Connect signal
+        signal_change_ciphering_mode.connect(self.handle_change_ciphering_mode)
+
         # Set layout
         self.setLayout(self.layout)
+
+    @Slot(int)
+    def handle_change_ciphering_mode(self, mode):
+        if mode == 1:
+            self.plain_text.setReadOnly(False)
+            self.plain_text.setPlaceholderText("Enter plain text here")
+
+        elif mode ==2:
+            self.plain_text.setReadOnly(True)
+            self.plain_text.setPlaceholderText("Plain text")
