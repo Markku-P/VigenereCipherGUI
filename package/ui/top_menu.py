@@ -8,6 +8,8 @@ top_menu.py
 
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QGroupBox, QPushButton, QCheckBox, QLineEdit
 from PyQt5.QtCore import Qt
+from package.ui.file_io_window import LoadFile
+from package.ui.file_io_window import SaveFile
 
 
 class TopMenu(QWidget):
@@ -115,9 +117,11 @@ class TopMenu(QWidget):
         # Create buttons
         self.button_load_cipher_key = QPushButton("Load")
         self.button_load_cipher_key.setMaximumWidth(200)
+        self.button_load_cipher_key.clicked.connect(self.load_key_file)
 
         self.button_save_cipher_key = QPushButton("Save")
         self.button_save_cipher_key.setMaximumWidth(200)
+        self.button_save_cipher_key.clicked.connect(self.save_key_file)
 
         # Add widgets to layout
         layout.addWidget(self.textedit_key)
@@ -153,6 +157,7 @@ class TopMenu(QWidget):
         # Create button
         self.button_load_cipher_alphabets = QPushButton("Load")
         self.button_load_cipher_alphabets.setMinimumWidth(100)
+        self.button_load_cipher_alphabets.clicked.connect(self.load_alphabets_file)
 
         # Add widgets to layout
         sub_layout.addWidget(self.textedit_alphabets_file)
@@ -167,3 +172,27 @@ class TopMenu(QWidget):
         else:
             self.textedit_alphabets_file.setEnabled(True)
             self.button_load_cipher_alphabets.setEnabled(True)
+
+    def load_key_file(self):
+        load_file = LoadFile()
+        key_file_name, extension = load_file.load("Load key file", "Vigenere key files (*.vkf);;All files (*.*)")
+
+        if key_file_name != "":
+            # TODO load file
+            pass
+            
+    def save_key_file(self):
+        save_file = SaveFile()
+        key_file_name, extension = save_file.save("Save key file", "Vigenere key files (*.vkf);;All files (*.*)")
+
+        if key_file_name != "":
+            # TODO save file
+            pass
+    
+    def load_alphabets_file(self):
+        load_file = LoadFile()
+        alphabets_file_name, extension = load_file.load("Load alphabets file", "Vigenere alphabets files (*.vaf);;All files (*.*)")
+
+        if alphabets_file_name != "":
+            # TODO load file
+            pass
