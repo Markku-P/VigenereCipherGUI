@@ -30,4 +30,11 @@ class SavePlainText():
         super().__init__()
     
     def save(self, file_uri, plain_text):
-        pass
+        try:
+            with open(file_uri, 'w') as f:
+                f.write(plain_text)
+                return True
+
+        except Exception:
+            # TODO handle file write error
+            return False

@@ -92,5 +92,7 @@ class PlainTextSide(QWidget):
         plain_text_file_name, extension = save_file.save("Save text file", "Text files (*.txt);;All files (*.*)")
 
         if plain_text_file_name != "":
-            # TODO save file
-            pass
+            # Save file
+            plain_text_data = self.plain_text.toPlainText()
+            save_plain_text = SavePlainText()
+            save_plain_text.save(plain_text_file_name, plain_text_data)
