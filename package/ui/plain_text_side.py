@@ -6,17 +6,23 @@ Markku P
 plain_text_side.py
 '''
 
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPlainTextEdit, QGroupBox
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QPlainTextEdit, QGroupBox, QPushButton
 from PyQt5.QtCore import Qt, QObject, pyqtSlot as Slot
+from package.ui.file_io_window import LoadFile, SaveFile
 
 
 class PlainTextSide(QWidget):
     def __init__(self, signal_change_ciphering_mode):
         super().__init__()
         # Create layouts
-        self.layout = QHBoxLayout()
+        self.layout = QVBoxLayout()
         self.layout.setContentsMargins(0,10,0,0)
         self.layout.setSpacing(0)
+
+        self.buttons_layout = QHBoxLayout()
+        self.buttons_layout.setContentsMargins(10,0,0,0)
+        self.buttons_layout.setSpacing(0)
+        self.buttons_layout.setAlignment(Qt.AlignLeft)
 
         self.group_box_layout = QHBoxLayout()
         self.group_box_layout.setContentsMargins(0,0,0,0)
@@ -29,9 +35,21 @@ class PlainTextSide(QWidget):
         # Create textbox
         self.plain_text = QPlainTextEdit()
 
+        # Create buttons
+        self.button_load_file = QPushButton("Load")
+        self.button_load_file.setMaximumWidth(200)
+        self.button_load_file.clicked.connect(self.load_plain_text)
+
+        self.button_save_file = QPushButton("Save")
+        self.button_save_file.setMaximumWidth(200)
+        self.button_save_file.clicked.connect(self.save_plain_text)
+
         # Add widget to layout
+        self.buttons_layout.addWidget(self.button_load_file)
+        self.buttons_layout.addWidget(self.button_save_file)
         self.group_box_layout.addWidget(self.plain_text)
         self.layout.addWidget(self.group_box)
+        self.layout.addLayout(self.buttons_layout)
 
         # Connect signal
         signal_change_ciphering_mode.connect(self.handle_change_ciphering_mode)
@@ -44,7 +62,25 @@ class PlainTextSide(QWidget):
         if mode == 1:
             self.plain_text.setReadOnly(False)
             self.plain_text.setPlaceholderText("Enter plain text here")
+            self.button_load_file.setEnabled(True)
 
         elif mode ==2:
             self.plain_text.setReadOnly(True)
             self.plain_text.setPlaceholderText("Plain text")
+            self.button_load_file.setEnabled(False)
+
+    def load_plain_text(self):
+        load_file = LoadFile()
+        plain_text_file_name, extension = load_file.load("Load text file", "Text files (*.txt);;All files (*.*)")
+
+        if plain_text_file_name != "":
+            # TODO load file
+            pass
+
+    def save_plain_text(self):
+        save_file = SaveFile()
+        plain_text_file_name, extension = save_file.save("Save text file", "Text files (*.txt);;All files (*.*)")
+
+        if plain_text_file_name != "":
+            # TODO save file
+            pass

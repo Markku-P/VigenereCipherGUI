@@ -8,8 +8,7 @@ top_menu.py
 
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QGroupBox, QPushButton, QCheckBox, QLineEdit
 from PyQt5.QtCore import Qt
-from package.ui.file_io_window import LoadFile
-from package.ui.file_io_window import SaveFile
+from package.ui.file_io_window import LoadFile, SaveFile
 
 
 class TopMenu(QWidget):
@@ -194,5 +193,6 @@ class TopMenu(QWidget):
         alphabets_file_name, extension = load_file.load("Load alphabets file", "Vigenere alphabets files (*.vaf);;All files (*.*)")
 
         if alphabets_file_name != "":
+            self.textedit_alphabets_file.setText(alphabets_file_name)
             # TODO load file
             pass

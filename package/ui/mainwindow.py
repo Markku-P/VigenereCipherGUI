@@ -50,6 +50,7 @@ class MainWindow(QMainWindow):
         palette.setColor(QPalette.Disabled, QPalette.Button, QColor(53, 53, 53).darker())
         palette.setColor(QPalette.ButtonText, Qt.white)
         palette.setColor(QPalette.Disabled, QPalette.ButtonText, Qt.gray)
+        palette.setColor(QPalette.Disabled, QPalette.Text, Qt.gray)
         palette.setColor(QPalette.BrightText, Qt.red)
         palette.setColor(QPalette.Highlight, QColor(142,45,197).lighter())
         palette.setColor(QPalette.HighlightedText, Qt.black)

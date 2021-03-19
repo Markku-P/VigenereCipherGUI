@@ -6,17 +6,23 @@ Markku P
 cipher_text_side.py
 '''
 
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPlainTextEdit, QGroupBox
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QPlainTextEdit, QGroupBox, QPushButton
 from PyQt5.QtCore import Qt, QObject, pyqtSlot as Slot
+from package.ui.file_io_window import LoadFile, SaveFile
 
 
 class CipherTextSide(QWidget):
     def __init__(self, signal_change_ciphering_mode):
         super().__init__()
         # Create layouts
-        self.layout = QHBoxLayout()
+        self.layout = QVBoxLayout()
         self.layout.setContentsMargins(0,10,0,0)
         self.layout.setSpacing(0)
+
+        self.buttons_layout = QHBoxLayout()
+        self.buttons_layout.setContentsMargins(10,0,0,0)
+        self.buttons_layout.setSpacing(0)
+        self.buttons_layout.setAlignment(Qt.AlignLeft)
 
         self.group_box_layout = QHBoxLayout()
         self.group_box_layout.setContentsMargins(0,0,0,0)
@@ -29,9 +35,21 @@ class CipherTextSide(QWidget):
         # Create textbox
         self.cipher_text = QPlainTextEdit()
 
+        # Create buttons
+        self.button_load_file = QPushButton("Load")
+        self.button_load_file.setMaximumWidth(200)
+        self.button_load_file.clicked.connect(self.load_encrypt_text)
+
+        self.button_save_file = QPushButton("Save")
+        self.button_save_file.setMaximumWidth(200)
+        self.button_save_file.clicked.connect(self.save_encrypt_text)
+
         # Add widget to layout
+        self.buttons_layout.addWidget(self.button_load_file)
+        self.buttons_layout.addWidget(self.button_save_file)
         self.group_box_layout.addWidget(self.cipher_text)
         self.layout.addWidget(self.group_box)
+        self.layout.addLayout(self.buttons_layout)
 
         # Connect signal
         signal_change_ciphering_mode.connect(self.handle_change_ciphering_mode)
@@ -44,7 +62,25 @@ class CipherTextSide(QWidget):
         if mode == 1:
             self.cipher_text.setReadOnly(True)
             self.cipher_text.setPlaceholderText("Encrypted text")
+            self.button_load_file.setEnabled(False)
 
         elif mode ==2:
             self.cipher_text.setReadOnly(False)
             self.cipher_text.setPlaceholderText("Enter encrypted text here")
+            self.button_load_file.setEnabled(True)
+
+    def load_encrypt_text(self):
+        load_file = LoadFile()
+        encrypt_file_name, extension = load_file.load("Load encrypt file", "Vigenere encrypt files (*.vef);;Text files (*.txt);;All files (*.*)")
+
+        if encrypt_file_name != "":
+            # TODO load file
+            pass
+
+    def save_encrypt_text(self):
+        save_file = SaveFile()
+        encrypt_file_name, extension = save_file.save("Save encrypt file", "Vigenere encrypt files (*.vef);;All files (*.*)")
+
+        if encrypt_file_name != "":
+            # TODO save file
+            pass
