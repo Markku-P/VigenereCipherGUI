@@ -107,11 +107,9 @@ class TopMenu(QWidget):
 
         # Create buttons
         self.button_load_cipher_key = QPushButton("Load")
-        #self.button_load_cipher_key.setMinimumWidth(200)
         self.button_load_cipher_key.setMaximumWidth(200)
 
         self.button_save_cipher_key = QPushButton("Save")
-        #self.button_load_cipher_key.setMinimumWidth(200)
         self.button_save_cipher_key.setMaximumWidth(200)
 
         # Add widgets to layout
@@ -123,7 +121,7 @@ class TopMenu(QWidget):
     def create_cipher_alphabets_groupbox(self):
         # Create layout
         layout = QVBoxLayout()
-        layout.setContentsMargins(10,5,10,5)
+        layout.setContentsMargins(10,0,10,5)
         layout.setSpacing(0)
 
         sub_layout = QHBoxLayout()
@@ -150,10 +148,10 @@ class TopMenu(QWidget):
         self.button_load_cipher_alphabets.setMinimumWidth(100)
 
         # Add widgets to layout
-        layout.addWidget(self.checkbox_default_key)
         sub_layout.addWidget(self.textedit_alphabets_file)
         sub_layout.addWidget(self.button_load_cipher_alphabets)
         layout.addLayout(sub_layout)
+        layout.addWidget(self.checkbox_default_key)
 
     def set_default_cipher_key(self, state):
         if state:
