@@ -49,7 +49,7 @@ class TopMenu(QWidget):
 
         # Set defaults
         self.encrypt_pressed()
-        self.checkbox_default_key.setChecked(True)
+        self.checkbox_default_alphabets.setChecked(True)
 
         # Set layout
         self.setLayout(self.layout)
@@ -143,9 +143,9 @@ class TopMenu(QWidget):
         self.group_box_alphabets.setLayout(layout)
 
         # Create checkbox
-        self.checkbox_default_key = QCheckBox("Use default cipher alphabets")
-        self.checkbox_default_key.setStyleSheet("QCheckBox { font-size: 14px; } ")
-        self.checkbox_default_key.stateChanged.connect(self.set_default_cipher_alphabets)
+        self.checkbox_default_alphabets = QCheckBox("Use default cipher alphabets")
+        self.checkbox_default_alphabets.setStyleSheet("QCheckBox { font-size: 14px; } ")
+        self.checkbox_default_alphabets.stateChanged.connect(self.set_default_cipher_alphabets)
 
         # Create textbox
         self.textedit_alphabets_file = QLineEdit()
@@ -162,7 +162,7 @@ class TopMenu(QWidget):
         sub_layout.addWidget(self.textedit_alphabets_file)
         sub_layout.addWidget(self.button_load_cipher_alphabets)
         layout.addLayout(sub_layout)
-        layout.addWidget(self.checkbox_default_key)
+        layout.addWidget(self.checkbox_default_alphabets)
 
     def set_default_cipher_alphabets(self, state):
         if state:
