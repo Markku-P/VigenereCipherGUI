@@ -17,6 +17,7 @@ from package.ui.about_window import AboutWindow
 class SignalComm(QObject):
     close_app = Signal()
     show_about = Signal()
+    change_ciphering_mode = Signal(int)
 
 class MainWindow(QMainWindow):
     def __init__(self, settings):
@@ -59,7 +60,7 @@ class MainWindow(QMainWindow):
         self.menubar = MenuBar(self.signal_comm.close_app, self.signal_comm.show_about)
 
         # Create central widget
-        self.central_widget = CentralWidget(settings)
+        self.central_widget = CentralWidget(settings, self.signal_comm.change_ciphering_mode)
 
         # Create statusbar
         self.statusbar = QStatusBar()

@@ -11,7 +11,7 @@ from PyQt5.QtCore import Qt
 
 
 class TopMenu(QWidget):
-    def __init__(self):
+    def __init__(self, signal_change_ciphering_mode):
         super().__init__()
         # Create main layout
         self.setFixedHeight(150)
@@ -43,6 +43,9 @@ class TopMenu(QWidget):
         # Add settings groupbox to layout
         self.layout.addWidget(self.group_box)
 
+        # Create instance of signal
+        self.signal_change_ciphering_mode = signal_change_ciphering_mode
+
         # Set defaults
         self.encrypt_pressed()
         self.checkbox_default_key.setChecked(True)
@@ -53,12 +56,16 @@ class TopMenu(QWidget):
     def encrypt_pressed(self):
         self.button_decrypt.setStyleSheet("QPushButton {color: gray;} QPushButton::hover {color: white;}")
         self.button_encrypt.setStyleSheet("background-color: red;")
-        # TODO send signal
+
+        # Send signal
+        self.signal_change_ciphering_mode.emit(1)
 
     def decrypt_pressed(self):
         self.button_encrypt.setStyleSheet("QPushButton {color: gray;} QPushButton::hover {color: white;}")
         self.button_decrypt.setStyleSheet("background-color: red;")
-        # TODO send signal
+
+        # Send signal
+        self.signal_change_ciphering_mode.emit(2)
 
     def create_mode_groupbox(self):
         # Create layout
