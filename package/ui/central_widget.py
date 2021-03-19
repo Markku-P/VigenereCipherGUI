@@ -46,7 +46,7 @@ class CentralWidget(QWidget):
         self.layout.addWidget(self.top_menu)
 
         # Add splitters to layout
-        self.splitter1.setSizes([1,1])
+        self.splitter1.setSizes([122,1])
         self.layout.addWidget(self.splitter1)
 
         # Add bottom menu to layout
