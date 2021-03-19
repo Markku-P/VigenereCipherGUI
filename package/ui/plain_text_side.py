@@ -9,6 +9,7 @@ plain_text_side.py
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QPlainTextEdit, QGroupBox, QPushButton
 from PyQt5.QtCore import Qt, QObject, pyqtSlot as Slot
 from package.ui.file_io_window import LoadFile, SaveFile
+from package.file_io.plain_text_io import LoadPlainText, SavePlainText
 
 
 class PlainTextSide(QWidget):
@@ -68,14 +69,23 @@ class PlainTextSide(QWidget):
             self.plain_text.setReadOnly(True)
             self.plain_text.setPlaceholderText("Plain text")
             self.button_load_file.setEnabled(False)
+            self.plain_text.clear()
 
     def load_plain_text(self):
         load_file = LoadFile()
         plain_text_file_name, extension = load_file.load("Load text file", "Text files (*.txt);;All files (*.*)")
 
-        if plain_text_file_name != "":
-            # TODO load file
-            pass
+        if plain_text_file_name != "":            
+            # Load file
+            load_plain_text = LoadPlainText()
+            plain_text_data = load_plain_text.load(plain_text_file_name)
+
+            if plain_text_data is not None:
+                # Clear plain text window
+                self.plain_text.clear()
+
+                # Set plain text
+                self.plain_text.insertPlainText(plain_text_data)
 
     def save_plain_text(self):
         save_file = SaveFile()

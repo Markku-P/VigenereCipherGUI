@@ -9,6 +9,7 @@ cipher_text_side.py
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QPlainTextEdit, QGroupBox, QPushButton
 from PyQt5.QtCore import Qt, QObject, pyqtSlot as Slot
 from package.ui.file_io_window import LoadFile, SaveFile
+from package.file_io.cipher_text_io import LoadCipherText, SaveCipherText
 
 
 class CipherTextSide(QWidget):
@@ -63,6 +64,7 @@ class CipherTextSide(QWidget):
             self.cipher_text.setReadOnly(True)
             self.cipher_text.setPlaceholderText("Encrypted text")
             self.button_load_file.setEnabled(False)
+            self.cipher_text.clear()
 
         elif mode ==2:
             self.cipher_text.setReadOnly(False)
@@ -73,9 +75,17 @@ class CipherTextSide(QWidget):
         load_file = LoadFile()
         encrypt_file_name, extension = load_file.load("Load encrypt file", "Vigenere encrypt files (*.vef);;Text files (*.txt);;All files (*.*)")
 
-        if encrypt_file_name != "":
-            # TODO load file
-            pass
+        if encrypt_file_name != "":            
+            # Load file
+            load_cipher_text = LoadCipherText()
+            encrypt_text_data = load_cipher_text.load(encrypt_file_name)
+
+            if encrypt_text_data is not None:
+                # Clear cipher text window
+                self.cipher_text.clear()
+
+                # Set encrypt text
+                self.cipher_text.insertPlainText(encrypt_text_data)
 
     def save_encrypt_text(self):
         save_file = SaveFile()
