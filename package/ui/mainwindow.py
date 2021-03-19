@@ -19,6 +19,10 @@ class SignalComm(QObject):
     show_about = Signal()
     change_ciphering_mode = Signal(int)
 
+class ErrorOnDefaultCipherMode(Exception):
+    # To catch syntax error on default cipher mode setting
+    pass
+
 class MainWindow(QMainWindow):
     def __init__(self, settings):
         super().__init__()
@@ -72,8 +76,29 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.central_widget)
         self.setStatusBar(self.statusbar)
 
+        # Set settings
+        self.set_default_ciphering_mode(settings)
+
         # Show Mainwindow
         self.show()
+
+    def set_default_ciphering_mode(self, settings):
+        # Ciphering mode (1 = encrypt, 2 = decrypt)
+        default_cipher_mode = settings.get("app").get("default_cipher_mode")
+
+        try:
+            if default_cipher_mode is not None and not (int(default_cipher_mode) < 1 or int(default_cipher_mode > 2)):
+                self.ciphering_mode = int(default_cipher_mode)
+            else:
+                raise ErrorOnDefaultCipherMode()
+
+        except (ValueError, ErrorOnDefaultCipherMode):
+            # Using default mode (encrypt)
+            self.ciphering_mode = 1
+
+        finally:
+            # Send ciphering mode change signal
+            self.signal_comm.change_ciphering_mode.emit(self.ciphering_mode)
 
     @Slot()
     def about(self):

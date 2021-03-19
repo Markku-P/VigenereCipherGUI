@@ -7,6 +7,7 @@ top_menu.py
 '''
 
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QGroupBox, QPushButton, QCheckBox, QLineEdit
+from PyQt5.QtCore import Qt, QObject, pyqtSlot as Slot
 from PyQt5.QtCore import Qt
 from package.ui.file_io_window import LoadFile, SaveFile
 
@@ -14,6 +15,9 @@ from package.ui.file_io_window import LoadFile, SaveFile
 class TopMenu(QWidget):
     def __init__(self, signal_change_ciphering_mode):
         super().__init__()
+        # Connect signal
+        signal_change_ciphering_mode.connect(self.handle_ciphering_mode_change)
+
         # Create main layout
         self.setFixedHeight(150)
         self.layout = QHBoxLayout()
@@ -32,7 +36,7 @@ class TopMenu(QWidget):
         self.group_box.setLayout(self.group_box_layout)
 
         # Create sub groupboxes
-        self.create_mode_groupbox()
+        self.create_mode_groupbox(signal_change_ciphering_mode)
         self.create_cipher_key_groupbox()
         self.create_cipher_alphabets_groupbox()
 
@@ -44,31 +48,13 @@ class TopMenu(QWidget):
         # Add settings groupbox to layout
         self.layout.addWidget(self.group_box)
 
-        # Create instance of signal
-        self.signal_change_ciphering_mode = signal_change_ciphering_mode
-
         # Set defaults
-        self.encrypt_pressed()
         self.checkbox_default_alphabets.setChecked(True)
 
         # Set layout
         self.setLayout(self.layout)
 
-    def encrypt_pressed(self):
-        self.button_decrypt.setStyleSheet("QPushButton {color: gray;} QPushButton::hover {color: white;}")
-        self.button_encrypt.setStyleSheet("background-color: red;")
-
-        # Send signal
-        self.signal_change_ciphering_mode.emit(1)
-
-    def decrypt_pressed(self):
-        self.button_encrypt.setStyleSheet("QPushButton {color: gray;} QPushButton::hover {color: white;}")
-        self.button_decrypt.setStyleSheet("background-color: red;")
-
-        # Send signal
-        self.signal_change_ciphering_mode.emit(2)
-
-    def create_mode_groupbox(self):
+    def create_mode_groupbox(self, signal_change_ciphering_mode):
         # Create layout
         layout = QVBoxLayout()
         layout.setContentsMargins(10,5,10,5)
@@ -83,12 +69,12 @@ class TopMenu(QWidget):
         self.button_encrypt = QPushButton("Encrypt")
         self.button_encrypt.setMaximumWidth(200)
         self.button_encrypt.setMaximumHeight(26)
-        self.button_encrypt.clicked.connect(self.encrypt_pressed)
+        self.button_encrypt.clicked.connect(lambda: signal_change_ciphering_mode.emit(1))
 
         self.button_decrypt = QPushButton("Decrypt")
         self.button_decrypt.setMaximumWidth(200)
         self.button_decrypt.setMaximumHeight(26)
-        self.button_decrypt.clicked.connect(self.decrypt_pressed)
+        self.button_decrypt.clicked.connect(lambda: signal_change_ciphering_mode.emit(2))
 
         # Add widgets to layout
         layout.addWidget(self.button_encrypt)
@@ -166,9 +152,11 @@ class TopMenu(QWidget):
 
     def set_default_cipher_alphabets(self, state):
         if state:
+            # Use default vigenere alphabets
             self.textedit_alphabets_file.setEnabled(False)
             self.button_load_cipher_alphabets.setEnabled(False)
         else:
+            # Use custom alphabets
             self.textedit_alphabets_file.setEnabled(True)
             self.button_load_cipher_alphabets.setEnabled(True)
 
@@ -196,3 +184,15 @@ class TopMenu(QWidget):
             self.textedit_alphabets_file.setText(alphabets_file_name)
             # TODO load file
             pass
+
+    @Slot(int)
+    def handle_ciphering_mode_change(self, mode):
+        if mode == 1:
+            # Encrypt
+            self.button_decrypt.setStyleSheet("QPushButton {color: gray;} QPushButton::hover {color: white;}")
+            self.button_encrypt.setStyleSheet("background-color: red;")
+        
+        elif mode == 2:
+            # Decrypt
+            self.button_encrypt.setStyleSheet("QPushButton {color: gray;} QPushButton::hover {color: white;}")
+            self.button_decrypt.setStyleSheet("background-color: red;")

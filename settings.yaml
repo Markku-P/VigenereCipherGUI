@@ -3,4 +3,4 @@ app:
   application_name: Vigenere Cipher GUI
   width: 1200
   height: 800
-  default_mode: 1
+  default_cipher_mode: 1
