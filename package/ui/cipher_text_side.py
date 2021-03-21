@@ -45,9 +45,14 @@ class CipherTextSide(QWidget):
         self.button_save_file.setMaximumWidth(200)
         self.button_save_file.clicked.connect(self.save_encrypt_text)
 
+        self.button_clear = QPushButton("Clear")
+        self.button_clear.setMaximumWidth(200)
+        self.button_clear.clicked.connect(lambda: self.cipher_text.clear())
+
         # Add widget to layout
         self.buttons_layout.addWidget(self.button_load_file)
         self.buttons_layout.addWidget(self.button_save_file)
+        self.buttons_layout.addWidget(self.button_clear)
         self.group_box_layout.addWidget(self.cipher_text)
         self.layout.addWidget(self.group_box)
         self.layout.addLayout(self.buttons_layout)
