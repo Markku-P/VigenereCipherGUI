@@ -15,7 +15,7 @@ from package.ui.bottom_menu import BottomMenu
 
 
 class CentralWidget(QWidget):
-    def __init__(self, settings, signal_change_ciphering_mode):
+    def __init__(self, settings, app_width, signal_change_ciphering_mode):
         super().__init__()
         # Create layout
         self.layout = QVBoxLayout()
@@ -46,7 +46,7 @@ class CentralWidget(QWidget):
         self.layout.addWidget(self.top_menu)
 
         # Add splitters to layout
-        self.splitter1.setSizes([122,1])
+        self.splitter1.setSizes([app_width,app_width])
         self.layout.addWidget(self.splitter1)
 
         # Add bottom menu to layout

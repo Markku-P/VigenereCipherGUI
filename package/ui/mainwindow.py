@@ -65,7 +65,7 @@ class MainWindow(QMainWindow):
         self.menubar = MenuBar(self.signal_comm.close_app, self.signal_comm.show_about)
 
         # Create central widget
-        self.central_widget = CentralWidget(settings, self.signal_comm.change_ciphering_mode)
+        self.central_widget = CentralWidget(settings, self.width(), self.signal_comm.change_ciphering_mode)
 
         # Create statusbar
         self.statusbar = QStatusBar()
